@@ -25,17 +25,24 @@ const prisma = new PrismaClient();
     });
     
         //Lista de usuarios
-    router.get('/', async (req, res) => {
+    router.get('/listUser', async (req, res) => {
         const allUser = await prisma.user.findMany();
         res.json(allUser);
     });
     
         //Obtener un usuario
-    router.get('/:id', async(req, res) => {
+    router.get('/getUser/:id', async(req, res) => {
         const {id} = req.params;
         const user = await prisma.user.findUnique({ where: {id: Number(id)}});
         
         res.json(user);
     });
+
+    //Eliminar usuario
+    router.delete('/deleteUser/:id', async (req, res) => {
+        const { id } = req.params;
+        await prisma.user.delete({ where: { id: Number(id) } });
+        res.sendStatus(200);
+      });
 
 export default router;

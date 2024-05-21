@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
 });
 
 // list Tweet
-router.get('/', async (req, res) => {
+router.get('/listTweet', async (req, res) => {
   const allTweets = await prisma.tweet.findMany({
     include: {
       user: {
@@ -45,7 +45,7 @@ router.get('/', async (req, res) => {
 });
 
 // get one Tweet
-router.get('/:id', async (req, res) => {
+router.get('/getTweet/:id', async (req, res) => {
   const { id } = req.params;
   console.log('Query tweet with id: ', id);
 
@@ -61,7 +61,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // update Tweet
-router.put('/:id', async(req, res) => {
+router.put('/updateTweet/:id', async(req, res) => {
   const { id } = req.params;
   const { tittle, content, image, userId } = req.body;
 
@@ -77,7 +77,7 @@ router.put('/:id', async(req, res) => {
 });
 
 // delete Tweet
-router.delete('/:id', async (req, res) => {
+router.delete('/deleteTweet/:id', async (req, res) => {
   const { id } = req.params;
   await prisma.tweet.delete({ where: { id: Number(id) } });
   res.sendStatus(200);

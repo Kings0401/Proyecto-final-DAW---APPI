@@ -44,7 +44,7 @@ router.get('/listTweet', async (req, res) => {
   res.json(allTweets);
 });
 
-// get one Tweet
+// get one Tweet id
 router.get('/getTweet/:id', async (req, res) => {
   const { id } = req.params;
   console.log('Query tweet with id: ', id);
@@ -59,6 +59,23 @@ router.get('/getTweet/:id', async (req, res) => {
 
   res.json(tweet);
 });
+
+//get tweet by user
+router.get('/getTweetsByUser/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+      const userTweets = await prisma.tweet.findMany({
+          where: { userId: Number(userId) },
+          include: { user: true },
+      });
+      res.json(userTweets);
+  } catch (error) {
+      console.error("Error fetching user tweets:", error);
+      res.status(500).json({ error: 'Failed to fetch user tweets' });
+  }
+});
+
 
 // update Tweet
 router.put('/updateTweet/:id', async(req, res) => {

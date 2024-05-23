@@ -1,38 +1,39 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-//Holi
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email     String   @unique
-  username  String   @unique
-  password  String
+  email String @unique
+  username String @unique
+  password String 
   isVerified Boolean @default(false)
 
-  tweets    Tweet[]
+  tweets Tweet[]
 }
 
 model Tweet {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  tittle    String
-  content   String
-  image     String?
-  impression Int @default(0)
+  tittle String
+  content String
+  image String?
 
-  userId    String  @db.ObjectId
-  user      User    @relation(fields: [userId], references: [id])
+  impression Int @default (0)
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }
